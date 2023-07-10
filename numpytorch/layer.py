@@ -5,11 +5,11 @@ from numpytorch.activation import Activation
 
 class Layer:
     @abc.abstractmethod
-    def forward(self, Z):
+    def forward(self, Z: np.ndarray) -> np.ndarray:
         raise NotImplementedError("Overrride me!")
 
     @abc.abstractmethod
-    def backward(self, dLdZ: np.ndarray):
+    def backward(self, dLdZ: np.ndarray) -> np.ndarray:
         raise NotImplementedError("Overrride me!")
         
 

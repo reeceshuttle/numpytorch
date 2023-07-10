@@ -1,3 +1,4 @@
+import numpy as np
 
 from numpytorch.layer import Layer
 
@@ -11,11 +12,11 @@ class NeuralNetwork:
                                                         activation=layer_spec['activation'],
                                                         biases=layer_spec['biases']))
     
-    def forward(self, X):
+    def forward(self, X: np.ndarray) -> np.ndarray:
         for layer in self.layers:
             X = layer.forward(X)
         return X
 
-    def backward(self, dLdZ, lr):
+    def backward(self, dLdZ: np.ndarray, lr) -> np.ndarray:
         for layer in reversed(self.layers):
             dLdZ = layer.backward(dLdZ, lr)

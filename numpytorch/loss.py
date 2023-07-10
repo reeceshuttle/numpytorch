@@ -3,11 +3,11 @@ import abc
 
 class Loss:
     @abc.abstractmethod
-    def loss(self, estimate, actual):
+    def loss(self, estimate: np.ndarray, actual:np.ndarray) -> float:
         raise NotImplementedError("Override me!")
     
     @abc.abstractmethod
-    def gradient(self, estimate, actual):
+    def gradient(self, estimate, actual) -> np.ndarray:
         raise NotImplementedError("Override me!")
 
 
