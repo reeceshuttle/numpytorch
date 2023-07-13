@@ -1,7 +1,7 @@
 import numpy as np
 import abc
 
-from numpytorch.activation import Activation
+import numpytorch as npt
 
 class Layer:
     @abc.abstractmethod
@@ -14,7 +14,7 @@ class Layer:
         
 
 class LinearLayer(Layer):
-    def __init__(self, layernum: int, nodes_in: int, nodes_out: int, activation: Activation, biases: bool):
+    def __init__(self, layernum: int, nodes_in: int, nodes_out: int, activation: npt.Activation, biases: bool):
         self.layernum = layernum # first weight matrix is 1, used to avoid matrix op
         self.nodes_in = nodes_in
         self.nodes_out = nodes_out

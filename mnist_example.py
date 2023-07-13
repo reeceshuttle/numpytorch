@@ -25,7 +25,7 @@ def get_metrics(current_network: npt.NeuralNetwork, points, labels):
     return total_incorrect/len(points[0])
 
 def train(network: npt.NeuralNetwork, dataloader: npt.MNISTDataLoader, 
-          stochastic_steps: int, 
+          optimizer: npt.Optimizer, stochastic_steps: int, 
           get_progress: bool = True, progress_step: int = 10000, 
           get_print_statements: bool = True, print_step: int = 100000):
     """
@@ -73,8 +73,12 @@ if __name__ == "__main__":
     #                          {'layer_type':LinearLayer, 'nodes_in':32, 'nodes_out':10, 'activation':Softmax, 'biases':True}]
     test_network_specification = [{'layer_type':npt.LinearLayer, 'nodes_in':784, 'nodes_out':20, 'activation':npt.ReLU, 'biases':True},
                                   {'layer_type':npt.LinearLayer, 'nodes_in':20, 'nodes_out':10, 'activation':npt.Softmax, 'biases':True}]
+    
     network = npt.NeuralNetwork(test_network_specification)
-    optimizer = npt.VanillaOptimizer() # TODO
+    optimizer = npt.VanillaOptimizer(network)
+    # network.initialize_optimizer(npt.VanillaOptimizer) # TODO
+
+    import pdb; pdb.set_trace()
 
     from helpers import load_953_dataset, load_full_dataset
     data_directory = os.path.join(os.sep.join(os.path.dirname(__file__).split(os.sep)), "data")
@@ -86,7 +90,7 @@ if __name__ == "__main__":
     # make a pretty print function for the network.
     
     stochastic_steps = 500000
-    result = train(network, dataloader, stochastic_steps)
+    result = train(network, dataloader, optimizer, stochastic_steps)
 
     testing_errors = result['testing_errors']
     training_errors = result['training_errors']
