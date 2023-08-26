@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 import time
 import os
 import numpytorch as npt
+from types import SimpleNamespace
 
-
-# import pdb; pdb.set_trace()
 
         
 def get_metrics(current_network: npt.NeuralNetwork, points, labels):
@@ -62,23 +61,29 @@ def train(network: npt.NeuralNetwork, dataloader: npt.MNISTDataLoader,
     if get_print_statements:
         print('                                                   ', end='\r')
         print(f'training time:{time.time()-training_start} sec')
-    return {'testing_errors':testing_errors, 'training_errors':training_errors,
+    data = {'testing_errors':testing_errors, 'training_errors':training_errors,
             'corresponding_step':corresponding_step}
+    return SimpleNamespace(**data)
 
 
 
 if __name__ == "__main__":
+    np.random.seed(0)
     # network_specification = [{'layer_type':LinearLayer, 'nodes_in':784, 'nodes_out':128, 'activation':ReLU, 'biases':True},
     #                          {'layer_type':LinearLayer, 'nodes_in':128, 'nodes_out':32, 'activation':ReLU, 'biases':True},
     #                          {'layer_type':LinearLayer, 'nodes_in':32, 'nodes_out':10, 'activation':Softmax, 'biases':True}]
     test_network_specification = [{'layer_type':npt.LinearLayer, 'nodes_in':784, 'nodes_out':20, 'activation':npt.ReLU, 'biases':True},
                                   {'layer_type':npt.LinearLayer, 'nodes_in':20, 'nodes_out':10, 'activation':npt.Softmax, 'biases':True}]
+    nn_sequential = []
+    for layer in test_network_specification:
+        nn_sequential.append(SimpleNamespace(**layer))
+
     
-    network = npt.NeuralNetwork(test_network_specification)
+    network = npt.NeuralNetwork(nn_sequential)
     optimizer = npt.VanillaOptimizer(network)
     # network.initialize_optimizer(npt.VanillaOptimizer) # TODO
 
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
 
     from helpers import load_953_dataset, load_full_dataset
     data_directory = os.path.join(os.sep.join(os.path.dirname(__file__).split(os.sep)), "data")
@@ -92,9 +97,9 @@ if __name__ == "__main__":
     stochastic_steps = 500000
     result = train(network, dataloader, optimizer, stochastic_steps)
 
-    testing_errors = result['testing_errors']
-    training_errors = result['training_errors']
-    corresponding_step = result['corresponding_step']
+    testing_errors = result.testing_errors
+    training_errors = result.training_errors
+    corresponding_step = result.corresponding_step
 
     final_test_error_proportion = get_metrics(network, testing_datapoints, testing_labels)
     final_training_error_proportion = get_metrics(network, training_datapoints, training_labels)
