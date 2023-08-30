@@ -50,3 +50,44 @@ class LinearLayer(Layer):
         self.bias -= lr*dLdY
 
         if self.layernum > 0: return dLdZ
+class Identity(Layer):
+    def forward(self, Y):
+        return Y
+
+    def backward(self, Y, dLdZ):
+        return dLdZ
+    
+class ReLU(Layer):
+    # def __init__(self):
+    def forward(self, Y):
+        Z = Y * (Y>0)
+        return Z
+
+    def backward(self, Y, dLdZ):
+        diagonal_vals = 1*(Y>0)
+        dZdY = np.diag(np.squeeze(diagonal_vals))
+        dLdY = dZdY@dLdZ
+        return dLdY
+
+class Sigmoid(Layer):
+    def forward(self, Y):
+        return 1/(1+np.exp(-Y))
+
+    def backward(self, Y, dLdZ):
+        diagonal_vals = Sigmoid.forward(Y)*(1-Sigmoid.forward(Y)) # store this for cheaper computation? maybe even forward pass?
+        dZdY = np.diag(np.squeeze(diagonal_vals))
+        dLdY = dZdY@dLdZ
+        return dLdY
+
+class Softmax(Layer):
+    def forward(self, Y): # store forward pass for cheaper computation?
+        num = np.exp(Y)
+        denom = np.sum(num)
+        return num/denom
+
+    def backward(self, Y, dLdZ):
+        dZdY = np.diag(np.squeeze(Softmax.forward(Y)))-(Softmax.forward(Y)@(Softmax.forward(Y).T))
+        dLdY = dZdY@dLdZ
+        return dLdY
+    
+
