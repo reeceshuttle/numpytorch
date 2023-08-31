@@ -69,14 +69,6 @@ def train(network: npt.NeuralNetwork, dataloader: npt.MNISTDataLoader,
 
 if __name__ == "__main__":
     np.random.seed(0)
-    # network_specification = [{'layer_type':LinearLayer, 'nodes_in':784, 'nodes_out':128, 'activation':ReLU, 'biases':True},
-    #                          {'layer_type':LinearLayer, 'nodes_in':128, 'nodes_out':32, 'activation':ReLU, 'biases':True},
-    #                          {'layer_type':LinearLayer, 'nodes_in':32, 'nodes_out':10, 'activation':Softmax, 'biases':True}]
-    # test_network_specification = [{'layer_type':npt.LinearLayer, 'nodes_in':784, 'nodes_out':20, 'activation':npt.ReLU, 'biases':True},
-    #                               {'layer_type':npt.LinearLayer, 'nodes_in':20, 'nodes_out':10, 'activation':npt.Softmax, 'biases':True}]
-    # nn_sequential = []
-    # for layer in test_network_specification:
-    #     nn_sequential.append(SimpleNamespace(**layer))
     nn_sequential = [npt.Linear(784, 20, last_linear=True), npt.ReLU(), 
                      npt.Linear(20, 10), npt.Softmax()]
 
@@ -85,7 +77,6 @@ if __name__ == "__main__":
     optimizer = npt.VanillaOptimizer(network)
     # network.initialize_optimizer(npt.VanillaOptimizer) # TODO
 
-    # import pdb; pdb.set_trace()
 
     from helpers import load_953_dataset, load_full_dataset
     data_directory = os.path.join(os.sep.join(os.path.dirname(__file__).split(os.sep)), "data")
