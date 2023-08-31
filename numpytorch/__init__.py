@@ -1,4 +1,3 @@
-from numpytorch.activation import *
 from numpytorch.layer import *
 from numpytorch.loss import *
 from numpytorch.model import *
