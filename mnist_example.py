@@ -77,8 +77,8 @@ if __name__ == "__main__":
     # nn_sequential = []
     # for layer in test_network_specification:
     #     nn_sequential.append(SimpleNamespace(**layer))
-    nn_sequential = [npt.LinearLayer(784, 20, last_linear=True), npt.ReLU(), 
-                     npt.LinearLayer(20, 10), npt.Softmax()]
+    nn_sequential = [npt.Linear(784, 20, last_linear=True), npt.ReLU(), 
+                     npt.Linear(20, 10), npt.Softmax()]
 
     
     network = npt.NeuralNetwork(nn_sequential)

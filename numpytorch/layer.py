@@ -13,9 +13,9 @@ class Layer:
         raise NotImplementedError("Overrride me!")
         
 
-class LinearLayer(Layer):
+class Linear(Layer):
     def __init__(self, nodes_in: int, nodes_out: int, last_linear: bool=False, biases: bool=True):
-        self.last_linear = last_linear # first weight matrix is 1, used to avoid matrix op
+        self.last_linear = last_linear # used to avoid matrix op, means last linear layer in backprop
         self.nodes_in = nodes_in
         self.nodes_out = nodes_out
         self.biases = biases
@@ -84,7 +84,7 @@ class Sigmoid(Layer):
         return dLdY
 
 class Softmax(Layer):
-    def forward(self, Y): # store forward pass for cheaper computation?
+    def forward(self, Y):
         self.Y = Y
         num = np.exp(Y)
         denom = np.sum(num)
